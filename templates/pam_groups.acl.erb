@@ -1,0 +1,10 @@
+##############################################################################
+# << FILE MANAGED BY PUPPET >>
+# Manual changes are likey to be overwritten
+##############################################################################
+<% if @pam_acl_groups != 'false' -%>
+<% @pam_acl_groups.each do |group| -%>
+<%= group %>
+<%- end -%>
+<%- end -%>
+

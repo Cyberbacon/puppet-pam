@@ -164,6 +164,9 @@ class pam::pamd (
   $pam_mkhomedir         = false,
   $pam_mkhomedir_session = false,
 
+  $pam_acl_groups        = 'NONE',
+  $pam_acl_users         = 'NONE',
+
   $enable_motd           = false) {
 
   include pam::params
@@ -272,6 +275,26 @@ class pam::pamd (
       default: { $pam_mkhomedir_session_set = $pam_mkhomedir_session }
     }
 
+  }
+
+  if($pam_acl_groups != 'NONE') {
+    file {"/etc/pam_groups.acl" :
+      ensure  => $ensure,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0600',
+      content => template("pam/pam_groups.acl.erb")
+    }
+  }
+
+  if($pam_acl_users != 'NONE') {
+    file {"/etc/pam_users.acl" :
+      ensure  => $ensure,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0600',
+      content => template("pam/pam_users.acl.erb")
+    }
   }
 
   case $::osfamily {

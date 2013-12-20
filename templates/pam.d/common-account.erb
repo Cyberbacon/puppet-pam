@@ -13,3 +13,9 @@ account	<%= scope.lookupvar('pam::pamd::pam_ldap_account_set') %>
 <% end -%>
 account	requisite			pam_deny.so
 account	required			pam_permit.so
+<% if scope.lookupvar('pam::pamd::pam_acl_groups') != 'NONE' then -%>
+account required      pam_listfile.so file=/etc/pam_groups.acl item=group sense=allow onerr=fail
+<%- end -%>
+<% if scope.lookupvar('pam::pamd::pam_acl_users') != 'NONE' then -%>
+account required      pam_listfile.so file=/etc/pam_users.acl item=user sense=allow onerr=fail
+<%- end -%>
